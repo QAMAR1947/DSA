@@ -226,22 +226,152 @@ void del(int item){
 	}
 }
 
-// function to display terminal node
-void display_terminal(Node *dummy_root)
-{
-	if(dummy_root == NULL)
+// function to display depth of binary tree
+int depth(Node* ptr){
+	// base case
+	if(ptr == NULL)
 	{
-		cout<<"Tree is Empty"<<endl;
-		return ;
+		return 0;
 	}
-	else if(dummy_root->lchild == NULL && dummy_root ->rchild== NULL)
+	int ld = depth(ptr->lchild);
+	int rd = depth(ptr->rchild);
+	
+	// check which subtree is greator
+	if(ld > rd)
 	{
-		cout<<dummy_root->info<<endl;
+		return ld+1;
 	}
 	else
 	{
-		display_terminal(dummy_root->lchild);
-		display_terminal(dummy_root->rchild);
+		return rd+1;
+	}
+	
+}
+
+// function to display terminal nodes of tree
+void display_terminal(Node* ptr)
+{
+	// 1st base case:
+	if(ptr == NULL){
+		cout<<"No elements in Tree";
+		return;
+	}
+	// 2nd base case:
+	if(ptr->lchild == NULL && ptr->rchild == NULL)
+	{
+		cout<<ptr->info;
+	}
+	// otherwise traverse to the root of each subtree and displays it using recursive call
+	else
+	{
+		display_terminal(ptr->lchild);
+		display_terminal(ptr->rchild);
+	}
+}
+
+// function to display depth of specific node
+int display_specific(int item, Node* ptr, int count){
+	// 1st base case:
+	if(ptr == NULL)
+	{
+		cout<<"node does not exist";
+	}
+	// 2nd base case: if item is root node
+	else if(item == ptr->info){
+		return count;
+	}
+	else
+	{
+		 if(item > ptr->info)
+		 {
+		 	display_specific(item, ptr->rchild, count+1);
+		 }
+		 else // if(item < ptr->info)
+		 {
+		 	display_specific(item, ptr->lchild, count+1);
+		 }
+		
+	}
+}
+
+// function to find a node having two child
+void node_with_two_child(Node* ptr){
+	if(ptr == NULL)
+	{
+		return;	
+	}
+	else
+	{
+		if(ptr->lchild != NULL && ptr->rchild != NULL)
+		{
+			cout<<ptr->info<<endl;
+		}
+		else
+		{
+			node_with_two_child(ptr->lchild);
+			node_with_two_child(ptr->rchild);
+		}
+	}
+}
+
+// function to find node having 1 child
+void node_eith_one_child(Node* ptr){
+	if(ptr == NULL)
+	{
+		return;
+	}
+	else
+	{
+		if((ptr->rchild != NULL && ptr->lchild == NULL) || (ptr->rchild == NULL && ptr->lchild != NULL))
+		{
+			cout<<ptr->info<<endl;
+		}
+		else
+		{
+			node_eith_one_child(ptr->lchild);
+			node_eith_one_child(ptr->rchild);
+		}
+	}
+}
+
+// function to find the position of child to its parent
+void parent_position(int item){
+	// pointers to get the location of parent and its child node
+	Node *parent, *loc;
+	find(item, parent, loc);
+	// now check where the child lies
+	if(parent->lchild == loc){
+		cout<<"it's on the left side";
+	}
+	else
+	{
+		cout<<"it's on the right side";
+	}
+}
+
+// funtion to print level nodes
+void print_level_nodes(Node* ptr, int level){
+	if(ptr == NULL){
+		cout<<"no Tree Exist";
+		return;
+	}
+	// if only root exist
+	else if(level == 0){
+		cout<<ptr->info<<", ";
+	}
+	else
+	{
+		print_level_nodes(ptr->lchild, level-1);
+		print_level_nodes(ptr->rchild, level-1);
+	}
+	
+}
+// function to get the total level
+void level_order_traversal(){
+	int height = max_depth(root);	// stores the number of level
+	for(int i=0; i<height; i++){
+		print_level_nodes(root, i);
+		cout<<endl;
 	}
 }
 
@@ -260,7 +390,9 @@ int main(){
 	insert(7);
 	insert(3);
 	
-	inorder(root);
+//	inorder(root);
+//	cout<<depth(root);
+//	cout<<display_specific(3,root,0);
 	
 	
 	
