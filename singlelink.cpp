@@ -60,27 +60,25 @@ void insert_end(int x){
 
 // INSERTING NODE AT SPECIFIC POSITION
 void insert_specific(int x, int pos){
+	// IF POSITION EXCEEDS THE TOTAL NODES
+	if(pos > count){
+		cout<<"SORRY! YOUR POSITION IS GREATER THAN TOTAL NODES"<<endl;
+	}
+
+	NODE* new_node = new NODE();
+	new_node->data = x;
+	new_node->next = NULL;
+	
 	// INSERTING AT FIRST INDEX
 	if(pos == 1){
-		NODE* new_node = new NODE();
-		new_node->data = x;
 		new_node->next = head;
 		head = new_node;
 		count ++;
 		return;
 	}
 	
-	// IF POSITION EXCEEDS THE TOTAL NODES
-	if(pos > count){
-		cout<<"SORRY! YOUR POSITION IS GREATOR THAN TOTAL NODES"<<endl;
-	}
-	
 	NODE* temp = head;
-	
-	NODE* new_node = new NODE();
-	new_node->data = x;
-	new_node->next = NULL;
-	
+	// traversing till that position
 	for(int i=1; i<pos-1; i++){
 		temp = temp->next;
 	}
@@ -90,7 +88,7 @@ void insert_specific(int x, int pos){
 	count ++;
 }
 
-// DELETE NODE AT BEGINING
+// DELETE NODE AT BEGINNING
 void delete_first(){
 	// IF LIST IS ALREADY EMPTY
 	if(head == NULL){
@@ -99,14 +97,10 @@ void delete_first(){
 		return;
 	}
 	
-	NODE* current_node = new NODE();
-	
+	NODE* temp = head;
 	// UPDATING ADDRESSES 
-	current_node  = head;
-	current_node = current_node -> next;
-	delete(head);
-	head = current_node;	
-	
+	head = temp->next;
+	delete(temp);
 	count--;
 }
 
@@ -116,38 +110,36 @@ void delete_end(){
 		cout<<"LIST IS EMPTY"<<endl;
 		return;
 	}
-	
+	//If a single node in the list
 	if(head->next == NULL){
 		delete(head);
 		head = NULL;
 		count --;
 		return;
 	}
-	
-	
-	NODE* s_l_node = new NODE();
-	NODE* c_node = new NODE();
-	
-	s_l_node = head;
-	c_node = head -> next;
-	
-	while(c_node -> next != NULL){
-		s_l_node = s_l_node -> next;
-		c_node = c_node -> next;
+	NODE *temp = head;
+	while(temp->next->next != NULL){
+		temp = temp->next;
 	}
-	
-	delete(c_node);
-	s_l_node ->next = NULL;
+	// deleting last node
+	delete(temp->next);
+	// updating the address of the last node
+	temp->next = NULL;
 	
 	count --;
 }
 
 // DELETE NODE AT SPECIFIC LOCATION
 void delete_specific(int pos){
+	// IF POSITION EXCEEDS THE TOTAL NODES
+	if(pos > count){
+		cout<<"SORRY! YOUR POSITION IS GREATER THAN TOTAL NODES"<<endl;
+	}
+	// When no nodes in the list
 	if(head == NULL){
 		return;
 	}
-	
+	// If the first node is to be deleted
 	if (pos == 1) {
         NODE* temp = head;
         head = head->next;
@@ -155,26 +147,25 @@ void delete_specific(int pos){
         count--;
         return;
     }
-	
-	NODE* current_node = head;
-	NODE* prev_node = NULL;
+	// otherwise
+	NODE* temp= head;
 	//traversing
-	int current_pos = 1;
-    while (current_node != NULL && current_pos != pos) {
-        prev_node = current_node;
-        current_node = current_node->next;
-        current_pos++;
-    }
 
-    if (current_node == NULL) {
-        cout << "Position " << pos << " not found in the list." << endl;
-        return;
-    }
-    
-	prev_node->next = current_node->next;
-	delete(current_node);
-	
-	count --;
+	for(int i=1; i<pos-1; i++){
+		temp = temp->next;
+	}
+	NODE* next_node = temp->next;
+	if(next_node->next == NULL){
+		temp->next = NULL;
+		delete(next_node);
+		count --;
+	}
+	else
+	{
+		temp->next = next-node->next;
+		delete(next_node);
+		count --;
+	}
 }
 
 // REVERSE THE LIST
@@ -187,7 +178,7 @@ void reverse(){
 		cout<<"LIST CONTAINS ONLY ONE NODE"<<endl;
 		return;
 	}
-	cout<<"REVERSE OF LINK LIST : ";
+	cout<<"REVERSE OF LINK LIST: ";
 	NODE* prev_node = head;
 	NODE* current_node = head->next;
 	while(current_node != NULL){
