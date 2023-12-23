@@ -1,67 +1,103 @@
 #include<iostream>
 using namespace std;
 
-struct NODE{
-	int data;
-	NODE* next;
-};
+struct node
+{
+	int value;
+	struct node* link;
+}*top = NULL;
 
-// CHECK IF STACK IS EMPTY
-void isEmpty(struct Node* &top){
-	if(top == NULL){
-		cout<<"STACK UNDERFLOW"<<endl;
+// Function to check underflow
+int is_Empty()
+{
+	if(top == NULL)
+	{
+		return 1;	
 	}
-}
-
-// TO INSERT NODE AT BEGINING OF STACK
-void push(struct NODE* &top, int x){
-	NODE* new_node = new NODE();
-	
-	new_node->data = x;
-	new_node->next = top;
-	top = new_node;
-}
-
-// TO REMOVE NODE FROM STACK
-int pop(struct NODE* &top){
-	if(top == NULL){
-		cout<<"STACK UNDERFLOW"<<endl;
+	else
+	{
 		return 0;
-	}
-	
-	NODE* temp = top;
-	top = top->next;
-	int x = temp->data;
-	delete(temp);
-	
-	return x;
+	}	
 }
 
-// TO DISPLAY NODES OF STACK
-void display(struct NODE* &top){
-	if(top == NULL){
-		cout<<"STACK UNDERFLOW"<<endl;
+// Inserting value at the beginnig
+void push(int x)
+{
+	node *temp = new node();
+	temp->value = x;
+	temp->link = NULL;
+	
+	temp->link = top;
+	top = temp;
+}
+
+// Deleting value from the beginning and return it
+int pop()
+{
+	if(is_Empty())
+	{
+		cout<<"Stack underflow";
+		return(0);
+	}
+	else
+	{
+		node* temp = top;
+		top = temp->link;
+		int value = temp->value;
+		delete(temp);
+		return value;	
+	}
+}
+
+// display the top most element of stack
+int peek()
+{
+	if(is_Empty())
+	{
+		cout<<"Stack Underflow";
+		return false;
+	}
+	else
+	{
+		node* temp = top;
+		return temp->value;
+	}
+}
+
+// display the elements of stack
+void display(){
+	if(is_Empty())
+	{
+		cout<<"Stack Underflow";
 		return;
 	}
-	
-	NODE* temp = top;
-	while(temp != NULL){
-		cout<<temp->data<<", ";
-		temp = temp->next;
+	else
+	{
+		node* temp = top;
+		while(temp!= NULL)
+		{
+			cout<<temp->value<<", ";
+			temp= temp->link;
+		}
 	}
-	cout<<"\n";
-	
 }
-int main(){
-	NODE* top = NULL;
+
+// MAIN Function
+int main()
+{
+	push(3);
+	push(4);
+	push(5);
+	push(6);
 	
-	push(top, 5);
-	push(top, 6);
-	push(top, 7);
+	display();
+	cout<<"Top element: "<<peek();
 	
-	display(top);
-	
-	cout<<pop(top);
+	pop();
+	pop();
+	pop();
+	pop();
+	pop();
 	
 	return 0;
 }
