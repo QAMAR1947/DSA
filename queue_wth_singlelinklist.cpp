@@ -1,59 +1,110 @@
 #include<iostream>
 using namespace std;
 
-struct queue{
-	int data;
-	queue* next;
-};
+struct node{
+	int value;
+	struct node* link;
+}*front = NULL, *rear = NULL;
 
-// INSERT NODE AT END
-void push(struct queue* &front,struct queue* &end,int x){
-	queue* node = new queue();
-	node->data = x;
-	node->next = NULL;
+// inserting new element in queue at the end
+void enqueue(int x)
+{
+	node* temp = new node();
+	temp->value = x;
+	temp->link = NULL;
 	
-	if(front == NULL){
-		front = node;
-		end = node;
+	// if queue is empty
+	if(front == NULL && rear == NULL)
+	{
+		front = rear = temp;
 		return;
 	}
-	
-	end->next = node;
-	end = node;
-		
-}
-
-// DELETE NODE AT BEGINING
-int pop(struct queue* &front,struct queue* &end){
-	if(front == NULL){
-		cout<<"Queue Underflow"<<endl;
-		return 0;
+	else
+	{
+		rear->link = temp;
+		rear = temp;	
+		return;
 	}
-	
-	queue* temp = front;
-	front = front->next;
-	int x = temp->data;
-	delete(temp);
-	
-	return x;
-	
 }
 
-int main(){
-	queue* front = NULL;
-	queue* end = NULL;
+// deleting element from queue from beginning and printing it
+int dequeue()
+{
+	if(front == NULL && rear == NULL)
+	{
+		cout<<"queue is empty";
+		return false;
+	}
+	else if(front == NULL)
+	{
+		cout<<"Queue underflow";
+		return false;
+	}
+	else
+	{
+		node* temp = front;
+		front = front->link;
+		int value = temp->value;	// storing deleted node value to be printed
+		delete(temp);
+		temp = front;
+		
+		return value;
+	}
+}
+
+// funtion to display peek value
+void peek()
+{
+	if(front == NULL && rear == NULL)
+	{
+		cout<<"Queue is empty";
+		return;
+	}
+	else
+	{
+		node* temp = front;
+		cout<<temp->value;
+	}
+}
+
+// function to display the elements of queue
+void display(){
+	if(front == NULL && rear == NULL)
+	{
+		cout<<"Queue is empty";
+		return;
+	}
+	else
+	{
+		node* temp = front;
+		while(temp != NULL)
+		{
+			cout<<temp->value<<", ";
+			temp = temp->link;
+		}
+	}
+}
+
+// MAIN Function
+int main()
+{
+	enqueue(5);
+	enqueue(10);
+	enqueue(15);
+	enqueue(20);
 	
-	push(front,end,10);
-	push(front,end,11);
-	push(front,end,12);
+	cout<<"\nelements of queue are: ";
+	display();
 	
-	cout<<pop(front,end)<<endl;
-	cout<<pop(front,end)<<endl;
-	cout<<pop(front,end)<<endl;
-	cout<<pop(front,end)<<endl;
+	cout<<"\nPeek value is: ";
+	peek();
 	
-	
-	
+	cout<<"\nDequeuing elements: ";
+	cout<<dequeue();
+	cout<<dequeue();
+	cout<<dequeue();
+	cout<<dequeue();
+	cout<<dequeue();
 	
 	return 0;
 }
