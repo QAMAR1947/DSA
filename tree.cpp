@@ -140,7 +140,7 @@ void case_b(Node* &parent, Node* &loc)
 // function of case c
 void case_c(Node* &parent, Node* &loc)
 {
-		Node *ptr, *ptrsave, *suc, *parsuc;
+	Node *ptr, *ptrsave, *suc, *parsuc;
 	ptrsave = loc;
 	ptr = loc->rchild;
 	
