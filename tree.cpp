@@ -140,7 +140,47 @@ void case_b(Node* &parent, Node* &loc)
 // function of case c
 void case_c(Node* &parent, Node* &loc)
 {
+		Node *ptr, *ptrsave, *suc, *parsuc;
+	ptrsave = loc;
+	ptr = loc->rchild;
 	
+	// traversing to the last node/ inorder successor of right subtree of deleted node
+	while(ptr->lchild != NULL)
+	{
+		ptrsave = ptr;
+		ptr = ptr->lchild;	
+	}
+	// storing the address of successor and it's parent
+	suc = ptr;
+	parsuc = ptrsave;
+	// deleting successor depending upon whether it has no child or one
+	if(suc->lchild == NULL && suc->rchild == NULL)
+	{
+		case_a(parsuc, suc);
+	}
+	else
+	{
+		case_b(parsuc, suc);
+	}
+	
+	// if the item to be deleted is root
+	if(parent == NULL)
+	{
+		suc = root;
+	}
+	else
+	{
+		if(loc == parent->lchild)
+		{
+			parent->lchild = suc;
+		}
+		else{
+			parent->rchild = suc;
+		}
+	}
+	// updating the addresses
+	suc->lchild = loc->lchild;
+	suc->rchild = loc->rchild;
 }
 
 //									TRAVERSAL IN BINARY TREE
