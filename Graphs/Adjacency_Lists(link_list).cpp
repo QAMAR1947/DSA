@@ -137,7 +137,7 @@ void insert_edge(char u, char v) {
 
 void del_edge(char u, char v) {
     node *locu;
-    edge *ptr, *tmp, *q;
+    edge *tmp, *q;
     locu = find(u);
 
     if (locu == NULL) {
